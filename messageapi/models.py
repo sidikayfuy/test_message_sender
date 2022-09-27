@@ -33,7 +33,7 @@ def sending(sender, instance, created, **kwargs):
         else:
             clients = Client.objects.filter(operator_code=filter_client)
         for i in clients:
-            if Message.objects.get(client=i, mail_list_obj=instance):
+            if Message.objects.filter(client=i, mail_list_obj=instance).count()>0:
                 mes = Message.objects.get(client=i, mail_list_obj=instance)
                 mes.status = False
                 mes.date_create = datetime.datetime.now(date_start.tzinfo)
@@ -55,7 +55,6 @@ def sending(sender, instance, created, **kwargs):
             }
             send_request.apply_async((url, headers, data, i.id), ignore_result=True)
 
-
     elif date_start>datetime.datetime.now(date_start.tzinfo):
         if filter_client in [i.tag for i in Client.objects.all()]:
             clients = Client.objects.filter(tag=filter_client)
@@ -63,7 +62,7 @@ def sending(sender, instance, created, **kwargs):
             clients = Client.objects.filter(operator_code=filter_client)
 
         for i in clients:
-            if Message.objects.get(client=i, mail_list_obj=instance):
+            if Message.objects.filter(client=i, mail_list_obj=instance).count()>0:
                 mes = Message.objects.get(client=i, mail_list_obj=instance)
                 mes.status = False
                 mes.date_create = datetime.datetime.now(date_start.tzinfo)
