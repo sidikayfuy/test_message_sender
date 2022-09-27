@@ -8,3 +8,4 @@
 docker-compose up --build -d && docker exec -it test_message_sender-main-webapp-1 bash -c "celery -A test_message worker --loglevel=info" 
 ````
 
+Из дополнительных заданий сделаны пункты: 3, 5, 9.
