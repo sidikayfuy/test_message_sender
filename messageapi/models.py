@@ -61,7 +61,7 @@ def sending(sender, instance, created, **kwargs):
             mes = Message()
             mes.client = i
             mes.status = False
-            mes.date_create = date_start
+            mes.date_create = datetime.datetime.now(date_start.tzinfo)
             mes.mail_list_obj = instance
             mes.save()
         for i in Message.objects.filter(mail_list_obj=instance):
