@@ -1,0 +1,478 @@
+openapi: 3.0.3
+info:
+  title: Message sender test work
+  description: "Тестовое задание. Код проекта доступен по ссылке: https://gitlab.com/sidikayfuy/test_message_sender"
+  version: "1"
+servers:
+  - url: http://localhost:8000/api/v1
+tags:
+  - name: clients
+    description: Everything about Client
+  - name: maillist
+    description: Everything about Maillist
+  - name: stat
+    description: Statistics
+paths:
+  /clients/:
+    get:
+      tags:
+        - clients
+      summary: Get all clients
+      description: Get all clients
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clients'          
+
+    post:
+      tags:
+        - clients
+      summary: Add a new client
+      description: Add a new client
+      requestBody:
+        description: Add a new client
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientsPost'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientsGet'          
+        '400':
+          description: Invalid input
+  /clients/{clientId}/:
+    get:
+      tags:
+        - clients
+      summary: Get client by ID
+      description: Get client by ID
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of client to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientsGet'          
+        '404':
+          description: Not found
+    delete:
+      tags:
+        - clients
+      summary: Delete client by ID
+      description: Delete client by ID
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of client to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: successful operation
+        '404':
+          description: Not found
+    patch:
+      tags:
+        - clients
+      summary: Edit client by ID
+      description: Edit client by ID
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of client to edit
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Parch client by ID
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientsPost'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientsGet' 
+        '400':
+          description: Not valid input
+        '404':
+          description: Not found
+  /maillist/:
+    get:
+      tags:
+        - maillist
+      summary: Get all maillist
+      description: Get all maillist
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Maillists'          
+
+    post:
+      tags:
+        - maillist
+      summary: Add a new maillist
+      description: Add a new maillist
+      requestBody:
+        description: Add a new maillist
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MaillistPost'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MaillistGet'          
+        '400':
+          description: Invalid input
+  /maillist/{maillistId}/:
+    get:
+      tags:
+        - maillist
+      summary: Get maillist by ID
+      description: Get maillist by ID
+      parameters:
+        - name: maillistId
+          in: path
+          description: ID of maillist to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MaillistGet'          
+        '404':
+          description: Not found
+    delete:
+      tags:
+        - maillist
+      summary: Delete maillist by ID
+      description: Delete maillist by ID
+      parameters:
+        - name: maillistId
+          in: path
+          description: ID of maillist to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: successful operation
+        '404':
+          description: Not found
+    patch:
+      tags:
+        - maillist
+      summary: Edit maillist by ID
+      description: Edit maillist by ID
+      parameters:
+        - name: maillistId
+          in: path
+          description: ID of client to edit
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Parch maillist by ID
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MaillistPost'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MaillistGet' 
+        '400':
+          description: Not valid input
+        '404':
+          description: Not found
+  /stat/:
+    get:
+      tags:
+        - stat
+      summary: Get all statistic about maillists
+      description: Get all statistic about maillists
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stats'          
+  /stat/{maillistId}/:
+    get:
+      tags:
+        - stat
+      summary: Get full statistic about maillist by ID
+      description: Get full statistic about maillist by ID
+      parameters:
+        - name: maillistId
+          in: path
+          description: ID of client to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatFullInfo'          
+        '404':
+          description: Not found
+components:
+  schemas:
+    ClientsGet:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        number:
+          type: string
+          example: 79991111111
+        operator_code:
+          type: string
+          example: 999
+        tag:
+          type: string
+          example: worker
+        time_zone:
+          type: string
+          example: GMT+3
+    Clients:
+      type: array
+      items:
+        $ref: '#/components/schemas/ClientsGet'
+      example:
+        - id: 1
+          number: "79991111111"
+          operator_code: "999"
+          tag: worker
+          time_zone: GMT+3
+        - id: 2
+          number: "79991111111"
+          operator_code: "999"
+          tag: worker
+          time_zone: GMT+3
+    ClientsPost:
+      type: object
+      properties:
+        number:
+          type: string
+          example: 79991111111
+        tag:
+          type: string
+          example: worker
+        time_zone:
+          type: string
+          example: GMT+3
+    MaillistGet:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        date_start:
+          type: string
+          example: "2022-09-27T15:40:00Z"
+        text:
+          type: string
+          example: test
+        filter_client:
+          type: string
+          example: worker
+        date_stop:
+          type: string
+          example: "2022-09-27T16:40:00Z"
+    Maillists:
+      type: array
+      items:
+        $ref: '#/components/schemas/MaillistGet'
+      example:
+        - id: 1
+          date_start: "2022-09-27T15:40:00Z"
+          text: test
+          filter_client: worker
+          date_stop: "2022-09-27T16:40:00Z"
+        - id: 2
+          date_start: "2022-09-27T15:40:00Z"
+          text: test
+          filter_client: "999"
+          date_stop: "2022-09-27T16:40:00Z"
+    MaillistPost:
+      type: object
+      properties:
+        date_start:
+          type: string
+          example: 2022-09-27T15:40:00Z
+        text:
+          type: string
+          example: test
+        filter_client:
+          type: string
+          example: worker
+        date_stop:
+          type: string
+          example: 2022-09-27T16:40:00Z
+    Mailinfo:
+      type: object
+      properties:
+        send:
+          type: integer
+          format: int64
+          example: 6
+        process:
+          type: integer
+          format: int64
+          example: 0
+    Statinfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        date_start:
+          type: string
+          example: "2022-09-27T15:40:00Z"
+        text:
+          type: string
+          example: test
+        filter_client:
+          type: string
+          example: worker
+        date_stop:
+          type: string
+          example: "2022-09-27T16:40:00Z"
+        full:
+          type: integer
+          format: int64
+          example: 6
+        mails_info:
+          type: object
+          $ref: '#/components/schemas/Mailinfo'
+    Stats:
+      type: array
+      items:
+        type: object
+        $ref: '#/components/schemas/Statinfo'
+      example:
+        - id: 1
+          date_start: 2022-09-27T15:40:00Z
+          text: testtest
+          filter_client: worker
+          date_stop: 2022-09-27T16:40:00Z
+          full: 6
+          mails_info: 
+            send: 6
+            process: 0
+        - id: 2
+          date_start: 2022-09-27T15:40:00Z
+          text: testtest2
+          filter_client: "999"
+          date_stop: 2022-09-27T16:40:00Z
+          full: 6
+          mails_info: 
+            send: 6
+            process: 0
+    Mail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 6
+        date_create:
+          type: string
+          example: "2022-09-27T15:40:00Z"
+        status:
+          type: boolean
+          example: true
+        client:
+          type: object
+          $ref: '#/components/schemas/ClientsGet'
+    StatFullInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        date_start:
+          type: string
+          example: "2022-09-27T15:40:00Z"
+        text:
+          type: string
+          example: test
+        filter_client:
+          type: string
+          example: worker
+        date_stop:
+          type: string
+          example: "2022-09-27T16:40:00Z"
+        mails:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Mail'
+          example:
+          - id: 1
+            date_create: 2022-09-27T15:40:00Z
+            status: true
+            client: 
+              id: 6
+              numbers: "79991111111"
+              operator_code: "999"
+              tag: worker
+              time_zone: GMT+3
+          - id: 2
+            date_create: 2022-09-27T15:40:00Z
+            status: true
+            client: 
+              id: 7
+              numbers: "79992222222"
+              operator_code: "999"
+              tag: worker
+              time_zone: GMT+3
