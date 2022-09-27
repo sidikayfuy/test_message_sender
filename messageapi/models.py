@@ -32,14 +32,19 @@ def sending(sender, instance, created, **kwargs):
             clients = Client.objects.filter(tag=filter_client)
         else:
             clients = Client.objects.filter(operator_code=filter_client)
-
         for i in clients:
-            mes = Message()
-            mes.client = i
-            mes.status = False
-            mes.date_create = date_start
-            mes.mail_list_obj = instance
-            mes.save()
+            if Message.objects.get(client=i, mail_list_obj=instance):
+                mes = Message.objects.get(client=i, mail_list_obj=instance)
+                mes.status = False
+                mes.date_create = datetime.datetime.now(date_start.tzinfo)
+                mes.save()
+            else:
+                mes = Message()
+                mes.client = i
+                mes.status = False
+                mes.date_create = datetime.datetime.now(date_start.tzinfo)
+                mes.mail_list_obj = instance
+                mes.save()
         for i in Message.objects.filter(mail_list_obj=instance):
             url = 'https://probe.fbrq.cloud/v1/send/' + str(i.id)
             data = {'id': i.id, 'phone': i.client.number, 'text': i.mail_list_obj.text}
@@ -58,12 +63,18 @@ def sending(sender, instance, created, **kwargs):
             clients = Client.objects.filter(operator_code=filter_client)
 
         for i in clients:
-            mes = Message()
-            mes.client = i
-            mes.status = False
-            mes.date_create = datetime.datetime.now(date_start.tzinfo)
-            mes.mail_list_obj = instance
-            mes.save()
+            if Message.objects.get(client=i, mail_list_obj=instance):
+                mes = Message.objects.get(client=i, mail_list_obj=instance)
+                mes.status = False
+                mes.date_create = datetime.datetime.now(date_start.tzinfo)
+                mes.save()
+            else:
+                mes = Message()
+                mes.client = i
+                mes.status = False
+                mes.date_create = datetime.datetime.now(date_start.tzinfo)
+                mes.mail_list_obj = instance
+                mes.save()
         for i in Message.objects.filter(mail_list_obj=instance):
             url = 'https://probe.fbrq.cloud/v1/send/' + str(i.id)
             data = {'id': i.id, 'phone': i.client.number, 'text': i.mail_list_obj.text}
